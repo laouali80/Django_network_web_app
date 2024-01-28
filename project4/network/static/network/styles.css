@@ -1,0 +1,121 @@
+
+#post_content{
+    max-height : 100px;
+}
+
+textarea {
+    max-height: 50px;
+}
+/* #post , */
+#new_post {
+    border: 1px solid grey;
+    margin-bottom: 5px;
+}
+
+#follow, #delete_post, #edit_post {
+    margin-right: 4px;
+}
+
+.text-truncate-vertical span {
+    -webkit-line-clamp: 3;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+#heart {
+    width: 25px;
+    height: 25px;
+    stroke: black;
+    fill: none;
+    /* stroke-width: 4px; */
+    stroke-dasharray: 58;
+    /* stroke-dashoffset: 58; */
+    
+}
+
+/* #heartIcon{
+    stroke-width: 2px;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+} */
+
+#heart.like {
+    animation: like 2s ease-in forwards,
+    beat 0.8s linear 2s 2 forwards;
+}
+
+#heart.unlike{
+    animation: unlike 2s ease-out forwards;
+}
+
+
+@keyframes like {
+    0%{
+        stroke-dashoffset: 0;
+        /* fill: none; */
+    }
+
+    75%{
+        stroke-dashoffset: 0;
+        /* fill: none; */
+    }
+    
+    100%{
+        stroke-dashoffset: 58;
+        fill: red;
+    }
+}
+
+
+
+@keyframes beat {
+    0% {
+        transform: scale(1, 1);
+    }
+
+    50% {
+        transform: scale(0.9, 0.9);
+    }
+
+    100% {
+        transform: scale(1, 1);
+    }
+}
+
+@keyframes unlike {
+    0%{
+        stroke-dashoffset: 58;
+        fill: red;
+    }
+
+    75%{
+        stroke-dashoffset: 58;
+        fill: red;
+    }
+    
+    100%{
+        stroke-dashoffset: 0;
+        fill: none;
+    }
+}
+
+
+.account-img {
+    height: 125px;
+    width: 125px;
+    margin-right: 20px;
+    margin-bottom: 16px;
+}
+
+.account-heading {
+    font-size: 2.5rem;
+}
+
+.content-section {
+    background: #ffffff;
+    padding: 10px 20px;
+    border: 1px solid #dddddd;
+    border-radius: 3px;
+    margin-bottom: 20px;
+}
