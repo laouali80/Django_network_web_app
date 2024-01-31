@@ -6,7 +6,11 @@
 textarea {
     max-height: 50px;
 }
-/* #post , */
+
+a[id="profile_link"]:hover {
+    text-decoration: none;
+}
+
 #new_post {
     border: 1px solid grey;
     margin-bottom: 5px;

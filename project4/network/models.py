@@ -16,13 +16,15 @@ class Post(models.Model):
     def __str__(self):
         return f"Post ({self.id}) by {self.poster}."
 
-    def serialize(self):
+    def serialize(self, request_user):
+        # print("heeeeeeeeeeeeeeeeeeeeeeeee", self.poster.following.all())
         return {
             "id": self.id,
             "content": self.content,
             "poster": self.poster.username,
             "poster_id": self.poster.id,
-            "timestamp": self.timestamp.strftime("%b %d, %Y, %I:%M %p")
+            "timestamp": self.timestamp.strftime("%b %d, %Y, %I:%M %p"),
+            "isfollow": request_user in self.poster.follower.all()
         }
 
 class Like(models.Model):

@@ -29,14 +29,32 @@
                                 <div>Following</div>
                             </div>
                         </div>
-                        <p class="text-secondary">{{ user_info.email }}</p>
+                        <div>
+                            <p class="text-secondary">{{ user_info.email }}</p>
+                        </div>
+                        <div id="follow_btn">
+                            {% if user_info != request.user %}
+                            
+                                {% if isfollow == False %}
+
+                                    <button type="button" data-posterid="{{ user_info.id }}" class="btn btn-outline-primary">Follow</button>
+                            
+                                {% else %}
+
+                                    <button type="button" data-posterid="{{ user_info.id }}" class="btn btn-outline-secondary">Unfollow</button>
+                        
+                                {% endif %}
+
+                            {% endif %}
+                        </div>
+                        
                     </div>
                 </div>
             </div>
 
             <h1>All Posts</h1>
             <hr>
-            {{ request.user.following.count }}
+            
             {% for post in posts %}
                 <div id="post{{post.id}}" class="container w-95 mx-auto shadow rounded" style="border: 1px solid gray; margin-bottom: 5px;">
                     <div id="info" class="d-flex bd-highlight">
@@ -46,24 +64,27 @@
                             </div>
                         </div>
                         <div id="post_action" class="d-flex flex-row p-2 bd-highlight align-items-center">
-                            {% if user_info != request.user %}
-                            <!-- {{ user }} -->
+                            {% if user_info != request.user and isfollow == False %}
+                            
                                 <div id="follow">
                                     <button class="btn btn-primary" data-posterid="{{ user_info.id }}">
                                         Follow
                                     </button>
                                 </div>
                             {% endif %}
-                            <div id="delete_post">
-                                <span class="text-secondary">
-                                    Delete
-                                </span>
-                            </div>
-                            <div id="edit_post">
-                                <span class="text-danger">
-                                    Edit
-                                </span>
-                            </div>
+
+                            {% if user_info == request.user %}
+                                <div id="delete_post">
+                                    <span class="text-secondary">
+                                        Delete
+                                    </span>
+                                </div>
+                                <div id="edit_post">
+                                    <span class="text-danger">
+                                        Edit
+                                    </span>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                     <div id="post_content" class="text-truncate-vertical">
@@ -93,4 +114,6 @@
             {% endfor %}
             
         </div>
+
+        <script src="{% static 'network/profile.js' %}"></script>
 {% endblock %}

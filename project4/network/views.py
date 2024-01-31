@@ -10,7 +10,7 @@ from .models import User, Post
 from django.contrib import messages
 from django.http import JsonResponse
 
-
+@login_required(login_url="/login")
 def index(request):
     return render(request, "network/index.html", {
         "form": NewPostForm()
@@ -79,7 +79,6 @@ def new_post(request):
         if form.is_valid():
             content = form.cleaned_data["content"]
 
-            print(content)
 
             try:
                 post = Post.objects.create(content=content, poster=request.user)
@@ -102,7 +101,7 @@ def new_post(request):
         pass
 
 
-@login_required
+@login_required(login_url="/login")
 def profile_page(request, user_id):
 
     try:
@@ -118,11 +117,11 @@ def profile_page(request, user_id):
 
     posts = Post.objects.filter(poster=user).order_by("-timestamp").all()
     
-    print(User.objects.get(pk=request.user.id).following)
+    # print(user in request.user.following.all())
     return render(request, "network/profile.html", {
         "user_info": user,
         "posts": posts,
-        # "follow": user in request.user.following
+        "isfollow": user in request.user.following.all()
     })
 
 
@@ -131,22 +130,23 @@ def todo():
 
 
 # APIs
-@login_required
+@login_required(login_url="/login")
 def load_Posts(request, action):
     """Getting all the posts"""
 
     if action == "all":
         posts = Post.objects.all().order_by("-timestamp")
 
-        return JsonResponse([ post.serialize() for post in posts ], safe=False)
+        return JsonResponse([ post.serialize(request.user) for post in posts ], safe=False)
     elif action == "profile":
         pass
     elif action == "following":
         pass
     else:
         return JsonResponse({"error": "Invalid request."}, status=400)
+    
 
-
+@login_required(login_url="/login")
 def follow(request, follower_id):
     """Follow a user."""
 
@@ -167,7 +167,7 @@ def follow(request, follower_id):
         return JsonResponse({"message": "success"}, status=200)
     else:
         # TODO
-        return JsonResponse({"message": "fail"}, status=200)
+        return JsonResponse({"message": "fail"}, status=400)
 
 
 def todo():

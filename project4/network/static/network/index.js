@@ -20,6 +20,7 @@ function getPosts(action){
         .then(posts => {
             
             posts.forEach(post => {
+                // console.log(post);
 
                 const post_num = document.createElement("div");
                 post_num.id = `post${post.id}`;
@@ -37,31 +38,40 @@ function getPosts(action){
 
                 const poster = document.createElement("div");
                 poster.id = "poster";
-                poster.innerHTML = `${post.poster}`;
+                const profile_link = document.createElement("a")
+                profile_link.setAttribute("href", `profile/${post.poster_id}`);
+                profile_link.setAttribute("id", "profile_link");
+                profile_link.innerHTML = `${post.poster}`;
 
                 const post_action = document.createElement("div");
                 post_action.id = "post_action";
                 post_action.setAttribute("class","d-flex flex-row p-2 bd-highlight align-items-center");
 
-                const follow = document.createElement("div");
-                follow.id = "follow";
-                const btn = document.createElement("button");
-                btn.setAttribute("class","btn btn-primary");
-                btn.setAttribute("data-posterId", `${post.poster_id}`);
-                btn.innerHTML = "Follow";
+                if (!post.isfollow){
+
+                    const follow = document.createElement("div");
+                    follow.id = "follow";
+                    const btn = document.createElement("button");
+                    btn.setAttribute("class","btn btn-primary");
+                    btn.setAttribute("data-posterId", `${post.poster_id}`);
+                    btn.innerHTML = "Follow";
+                    follow.append(btn);
+                    post_action.append(follow);
+                    
+                }
                 
 
-                const delete_post = document.createElement("div");
-                delete_post.id = "delete_post";
-                const spanD = document.createElement("span");
-                spanD.setAttribute("class","text-secondary");
-                spanD.innerHTML = "Delete";
+                // const delete_post = document.createElement("div");
+                // delete_post.id = "delete_post";
+                // const spanD = document.createElement("span");
+                // spanD.setAttribute("class","text-secondary");
+                // spanD.innerHTML = "Delete";
 
-                const edit_post = document.createElement("div");
-                edit_post.id = "edit_post";
-                const spanE = document.createElement("span");
-                spanE.setAttribute("class","text-danger");
-                spanE.innerHTML = "Edit";
+                // const edit_post = document.createElement("div");
+                // edit_post.id = "edit_post";
+                // const spanE = document.createElement("span");
+                // spanE.setAttribute("class","text-danger");
+                // spanE.innerHTML = "Edit";
     
                 const post_content = document.createElement("div");
                 post_content.id = "post_content";
@@ -98,13 +108,14 @@ function getPosts(action){
                 
 
 
+                poster.append(profile_link);
                 post_info.append(poster);
-                follow.append(btn);
-                delete_post.append(spanD);
-                edit_post.append(spanE);
-                post_action.append(follow);
-                post_action.append(delete_post);
-                post_action.append(edit_post);
+                
+                // delete_post.append(spanD);
+                // edit_post.append(spanE);
+                
+                // post_action.append(delete_post);
+                // post_action.append(edit_post);
                 info.append(post_info);
                 info.append(post_action);
                 post_content.append(spanC);
