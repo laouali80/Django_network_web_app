@@ -1,12 +1,7 @@
 
 document.addEventListener("DOMContentLoaded", () => {
-
-
-
     // By default get the posts
     getPosts("all");
-
-    
 })
 
 function getPosts(action){

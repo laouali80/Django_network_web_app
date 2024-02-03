@@ -9,6 +9,9 @@ from .forms import NewPostForm
 from .models import User, Post
 from django.contrib import messages
 from django.http import JsonResponse
+import json
+from django.views.decorators.csrf import csrf_exempt
+
 
 @login_required(login_url="/login")
 def index(request):
@@ -125,8 +128,9 @@ def profile_page(request, user_id):
     })
 
 
-def todo():
-    pass
+@login_required(login_url="/login")
+def followings(request):
+    return render(request, "network/followings.html")
 
 
 # APIs
@@ -138,40 +142,86 @@ def load_Posts(request, action):
         posts = Post.objects.all().order_by("-timestamp")
 
         return JsonResponse([ post.serialize(request.user) for post in posts ], safe=False)
-    elif action == "profile":
-        pass
-    elif action == "following":
-        pass
+    
+    elif action == "followings":
+        posts = User.objects.filter(following=request.user).first()
+
+        print(posts.posts)
+
+        return JsonResponse({"message": "Followings request success."}, status=200)
+
     else:
         return JsonResponse({"error": "Invalid request."}, status=400)
     
 
+   
+@csrf_exempt
 @login_required(login_url="/login")
-def follow(request, follower_id):
-    """Follow a user."""
+def action(request, follower_id):
+    """Follow and unfollow a user."""
 
-    try:
-        user = User.objects.get(pk=follower_id)
-    except UnboundLocalError or ValueError:
-        raise Http404("User not found.")
-    except User.DoesNotExist:
-            return render(request, "error/404.html", {
-                "message": "404",
-                "title": "404 error"
-            })
+    if request.method == 'PUT':
+
+        data = json.loads(request.body)
+
+        if data.get('action') == 'follow':
+            try:
+                user = User.objects.get(pk=follower_id)
+            except UnboundLocalError or ValueError:
+                raise Http404("User not found.")
+            except User.DoesNotExist:
+                    return render(request, "error/404.html", {
+                        "message": "404",
+                        "title": "404 error"
+                    })
+            
+            if request.user.id != follower_id:
+                user.follower.add(request.user)
+                request.user.following.add(user)
+
+                return JsonResponse({"message": "Success follow."}, status=200)
+            else:
+                # error 400 if the user wants try to follow him/her-self.
+                return JsonResponse({"message": "Bad request"}, status=400)
+            
+        else:
+            # if there is no action in the demand.
+            return HttpResponse(status=204)
     
-    if request.user.id != follower_id:
-        user.follower.add(request.user)
-        request.user.following.add(user)
+    elif request.method == 'DELETE':
 
-        return JsonResponse({"message": "success"}, status=200)
+        data = json.loads(request.body)
+
+        if data.get('action') == 'unfollow':
+
+            try:
+                user = User.objects.get(pk=follower_id)
+            except UnboundLocalError or ValueError:
+                raise Http404("User not found.")
+            except User.DoesNotExist:
+                    return render(request, "error/404.html", {
+                        "message": "404",
+                        "title": "404 error"
+                    })
+            
+            if request.user.id != follower_id:
+                user.follower.remove(request.user)
+                request.user.following.remove(user)
+
+                return JsonResponse({"message": "Success unfollow"}, status=200)
+            else:
+                # error 400 if the user wants try to unfollow him/her-self.
+                return JsonResponse({"message": "Bad request."}, status=400)
+            
+        else:
+            # if there is no action in the demand.
+            return HttpResponse(status=204)
+        
     else:
-        # TODO
-        return JsonResponse({"message": "fail"}, status=400)
-
-
-def todo():
-    pass
+        #  Incorrect request from the user.
+        return JsonResponse({
+            "error": "Something wrong happen."
+        }, status=400)
 
 
 def todo():

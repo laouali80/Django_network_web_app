@@ -67,9 +67,7 @@
                             {% if user_info != request.user and isfollow == False %}
                             
                                 <div id="follow">
-                                    <button class="btn btn-primary" data-posterid="{{ user_info.id }}">
-                                        Follow
-                                    </button>
+                                    <button class="btn btn-primary" data-posterid="{{ user_info.id }}">Follow</button>
                                 </div>
                             {% endif %}
 

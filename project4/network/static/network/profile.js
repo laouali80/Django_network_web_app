@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () =>{
 
 const follow = (event) => {
     // const test = event.target.parentElement
-    // console.log(event.target)
+    // console.log(event.target.classList.value)
     // const element = event.target;
     const follow_id = event.target.dataset.posterid
     
@@ -23,27 +23,78 @@ const follow = (event) => {
         event.target.classList.add('btn-outline-secondary');
 
 
-        fetch(`/follow/${follow_id}`)
+        fetch(`/action/${follow_id}`, {
+            method: 'PUT',
+            body: JSON.stringify({
+                action: "follow"
+            })
+        })
         .then(response => response.json())
         .then(result => {
 
             console.log(result);
+
             const btns = document.querySelectorAll("button[class='btn btn-primary']");
                 
             btns.forEach(btn => {
                 btn.remove();
             })
         })
-        .catch(error => {
-        // information about the error if server goes down or could request(valid mailbox)
-        console.log(error)  
-        })
+        .catch(error => console.log(error))
 
-    }else if (event.target.parentElement.id === "follow_btn" && event.target.innerHTML === 'Unfollow'){
+    }
+    else if (event.target.parentElement.id === "follow_btn" && event.target.innerHTML === 'Unfollow'){
         
         event.target.innerHTML = 'Follow';     
         event.target.classList.remove('btn-outline-secondary');
         event.target.classList.add('btn-outline-primary');
+
+        fetch(`/action/${follow_id}`, {
+            method: 'DELETE',
+            body: JSON.stringify({
+                action: "unfollow"
+            })
+        })
+        .then(response => response.json())
+        .then(result => {
+
+            console.log(result);
+        })
+        .catch(error => {
+        // information about the error if server goes down or could request(valid mailbox)
+        console.log(error)  
+        })
+    }
+    else if(event.target.classList.value === 'btn btn-primary' && event.target.innerHTML === 'Follow'){
+     
+
+        fetch(`/action/${follow_id}`, {
+            method: 'PUT',
+            body: JSON.stringify({
+                action: "follow"
+            })
+        })
+        .then(response => response.json())
+        .then(result => {
+
+            console.log(result);
+            
+            const btns = document.querySelectorAll("button[class='btn btn-primary']");
+                
+            btns.forEach(btn => {
+                btn.remove();
+            })
+
+            const prof_btn = document.querySelector("button[class='btn btn-outline-primary']");
+
+            prof_btn.innerHTML = 'Unfollow';
+            prof_btn.classList.remove('btn-outline-primary');
+            prof_btn.classList.add('btn-outline-secondary');
+    
+        })
+        .catch(error => {
+            console.log(error)
+        })
     }
     
 }
