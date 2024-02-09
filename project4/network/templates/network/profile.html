@@ -37,7 +37,7 @@
                             
                                 {% if isfollow == False %}
 
-                                    <button type="button" data-posterid="{{ user_info.id }}" class="btn btn-outline-primary">Follow</button>
+                                    <button  type="button" data-posterid="{{ user_info.id }}" class="btn btn-outline-primary">Follow</button>
                             
                                 {% else %}
 
@@ -73,14 +73,10 @@
 
                             {% if user_info == request.user %}
                                 <div id="delete_post">
-                                    <span class="text-secondary">
-                                        Delete
-                                    </span>
+                                    <a role="button" aria-pressed="true" href="{% url 'edit' post_id=post.id %}" class="btn btn-outline-secondary">Edit</a>
                                 </div>
                                 <div id="edit_post">
-                                    <span class="text-danger">
-                                        Edit
-                                    </span>
+                                    <button id="delete" data-post="{{ post.id }}" class="btn btn-outline-danger">Delete</button>
                                 </div>
                             {% endif %}
                         </div>

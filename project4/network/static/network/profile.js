@@ -9,13 +9,29 @@ document.addEventListener("DOMContentLoaded", () =>{
             });
     
             // eventListener to all the follow btn
-            const btns = document.querySelectorAll("button");
+            const btns_follow = document.querySelectorAll("button");
             
-            btns.forEach(btn => {
+            btns_follow.forEach(btn => {
                 btn.addEventListener("click", follow);
             })
 
+            // eventListener to delete btn
+            const btns_delete = document.querySelectorAll("#delete")
+
+            btns_delete.forEach(btn => {
+                btn.addEventListener("click", delet);
+            })
+
 });
+
+
+const delet = (event) => {
+
+    const delete_post = event.target.dataset.post
+
+    // fetch(``)
+    // .then
+}
 
 const follow = (event) => {
     // const test = event.target.parentElement

@@ -11,6 +11,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 import json
 from django.views.decorators.csrf import csrf_exempt
+from django.utils import timezone
 
 
 @login_required(login_url="/login")
@@ -131,6 +132,64 @@ def profile_page(request, user_name):
 @login_required(login_url="/login")
 def followings(request):
     return render(request, "network/followings.html")
+
+
+@login_required(login_url="/login")
+def edit(request, post_id):
+
+    if request.method == "POST":
+        edit_content = request.POST.get("edit_content", False)
+        # print(edit_content == False)
+        if edit_content:
+
+            try:
+                post = Post.objects.get(pk=post_id)
+            except UnboundLocalError or ValueError:
+                # TODO
+                raise Http404("Post not found.")
+            except User.DoesNotExist:
+                    return render(request, "error/404.html", {
+                        "message": "404",
+                        "title": "404 error"
+                    })
+            
+            if post.poster != request.user:
+                return render(request, "error/403.html", {
+                        "message": "403 Forbidden Request.",
+                        "title": "403 Forbidden Request"
+                    })
+            
+            post.content = edit_content
+            post.timestamp = timezone.now()
+            post.save()
+            # print(timezone.now())
+
+            return redirect('profile', user_name=request.user.username)
+        
+        messages.info(request, 'Please fill the box with a content to post.')
+        return redirect('edit', post_id=post_id)
+
+
+    try:
+        post = Post.objects.get(pk=post_id)
+    except UnboundLocalError or ValueError:
+        # TODO
+        raise Http404("Post not found.")
+    except User.DoesNotExist:
+            return render(request, "error/404.html", {
+                "message": "404",
+                "title": "404 error"
+            })
+    
+    if post.poster != request.user:
+        return render(request, "error/403.html", {
+                "message": "403 Forbidden Request.",
+                "title": "403 Forbidden Request"
+            })
+    
+    return render(request, "network/edit.html",{
+        "post": post
+    })
 
 
 # APIs
