@@ -105,10 +105,10 @@ def new_post(request):
 
 
 @login_required(login_url="/login")
-def profile_page(request, user_id):
+def profile_page(request, user_name):
 
     try:
-        user = User.objects.get(pk=user_id)
+        user = User.objects.get(username=user_name)
     except UnboundLocalError or ValueError:
         # TODO
         raise Http404("User not found.")
@@ -134,21 +134,29 @@ def followings(request):
 
 
 # APIs
+
 @login_required(login_url="/login")
 def load_Posts(request, action):
     """Getting all the posts"""
 
     if action == "all":
-        posts = Post.objects.all().order_by("-timestamp")
+        posts = Post.objects.all().exclude(poster=request.user).order_by("-timestamp")
 
         return JsonResponse([ post.serialize(request.user) for post in posts ], safe=False)
     
     elif action == "followings":
-        posts = User.objects.filter(following=request.user).first()
+        users_follow = request.user.following.all()
 
-        print(posts.posts)
-
-        return JsonResponse({"message": "Followings request success."}, status=200)
+        posts = []
+        for post_set in users_follow:
+            set_posts = post_set.posts.all()
+            
+            for post in set_posts:
+                
+                serialize = post.serialize(request.user)
+                posts.append(serialize)
+            
+        return JsonResponse(sorted(posts, key=lambda d: d['timestamp'], reverse=True), safe=False)
 
     else:
         return JsonResponse({"error": "Invalid request."}, status=400)
@@ -224,5 +232,35 @@ def action(request, follower_id):
         }, status=400)
 
 
-def todo():
-    pass
+@csrf_exempt
+@login_required(login_url="/login")
+def action2(request, post_id):
+    """Like and Dislike a post."""
+    
+    if request.method == 'PUT':
+
+        data = json.loads(request.body)
+
+        if data.get('action') == 'like':
+            try:
+                post = Post.objects.get(pk=post_id)
+            except UnboundLocalError or ValueError:
+                raise Http404("Post not found.")
+            except User.DoesNotExist:
+                    return render(request, "error/404.html", {
+                        "message": "404",
+                        "title": "404 error"
+                    })
+            
+            # if request.user.id != follower_id:
+            #     user.follower.add(request.user)
+            #     request.user.following.add(user)
+
+            return JsonResponse({"message": "Success Like."}, status=200)
+            # else:
+                # error 400 if the user wants try to follow him/her-self.
+                # return JsonResponse({"message": "Bad request"}, status=400)
+            
+        else:
+            # if there is no action in the demand.
+            return HttpResponse(status=204)

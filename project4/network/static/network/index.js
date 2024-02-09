@@ -34,7 +34,7 @@ function getPosts(action){
                 const poster = document.createElement("div");
                 poster.id = "poster";
                 const profile_link = document.createElement("a")
-                profile_link.setAttribute("href", `profile/${post.poster_id}`);
+                profile_link.setAttribute("href", `profile/${post.poster}`);
                 profile_link.setAttribute("id", "profile_link");
                 profile_link.innerHTML = `${post.poster}`;
 
@@ -82,6 +82,7 @@ function getPosts(action){
 
                 const post_likes = document.createElement("div");
                 post_likes.id = "post_likes";
+                post_likes.setAttribute("data-post", `${post.id}`);
                 const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
                 svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
                 svg.setAttribute("class", "unlike");
@@ -168,30 +169,75 @@ const follow = (event) => {
     const element = event.target;
     const follow_id = element.dataset.posterid
     
-    fetch(`/follow/${follow_id}`)
-    .then(response => response.json())
-    .then(result => {
+    if (event.target.classList.value === 'btn btn-primary' && event.target.innerHTML === 'Follow'){
+        
+        fetch(`/action/${follow_id}`, {
+            method: 'PUT',
+            body: JSON.stringify({
+                action: "follow"
+            })
+        })
+        .then(response => response.json())
+        .then(result => {
 
-        console.log(result);
-    })
-    .catch(error => {
-      // information about the error if server goes down or could request(valid mailbox)
-      console.log(error)  
-    })
+            // console.log(result);
+            
+            const btns = document.querySelectorAll(`button[data-posterid='${follow_id.toString()}']`);
+
+            // console.log(btns)
+                
+            btns.forEach(btn => {
+                btn.remove();
+            })
+
+    
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    }
+    
 }
 
 const likeUnlikePost = (event) => {
     
 
-    // event.target.classList.contains("like") || 
+    // event.target.classList.contains("like") || dataset.posterid
     if(event.target.parentElement.classList.contains("like")){
+        // console.log("unlike: " + event.target.parentElement.parentElement.dataset.post)
         
         event.target.parentElement.classList.remove("like");
         event.target.parentElement.classList.add("unlike");
+
+        const post = event.target.parentElement.parentElement.dataset.post;
+
+        
     }else if(event.target.classList.contains("unlike")){
+        // console.log("like: " + event.target.parentElement.dataset.post)
         
         event.target.classList.remove("unlike");
         event.target.classList.add("like");
+
+        const post = event.target.parentElement.dataset.post
+    
+        fetch(`/action2/${post}`, {
+            method: 'PUT',
+            body: JSON.stringify({
+                action: "like"
+            })
+        })
+        .then(response => response.json())
+        .then(result => {
+
+            console.log(result);
+            
+
+    
+        })
+        .catch(error => {
+            console.log(error)
+        })
+
     }else{
         // console.log(event.target)
         console.log("error");

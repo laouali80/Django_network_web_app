@@ -16,6 +16,7 @@ const follow = (event) => {
     // const element = event.target;
     const follow_id = event.target.dataset.posterid
     
+    // from profile btn
     if (event.target.parentElement.id === "follow_btn" && event.target.innerHTML === 'Follow'){
         
         event.target.innerHTML = 'Unfollow';
@@ -44,7 +45,8 @@ const follow = (event) => {
 
     }
     else if (event.target.parentElement.id === "follow_btn" && event.target.innerHTML === 'Unfollow'){
-        
+    // from the profile btn
+
         event.target.innerHTML = 'Follow';     
         event.target.classList.remove('btn-outline-secondary');
         event.target.classList.add('btn-outline-primary');
@@ -66,7 +68,7 @@ const follow = (event) => {
         })
     }
     else if(event.target.classList.value === 'btn btn-primary' && event.target.innerHTML === 'Follow'){
-     
+    // from a post btn
 
         fetch(`/action/${follow_id}`, {
             method: 'PUT',

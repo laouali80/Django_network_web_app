@@ -29,5 +29,5 @@ class Post(models.Model):
 
 class Like(models.Model):
     post = models.ForeignKey('Post', on_delete=models.CASCADE)
-    count = models.IntegerField()
+    count = models.ManyToManyField("User", related_name="likes_count")
 
