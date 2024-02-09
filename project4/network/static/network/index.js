@@ -55,18 +55,6 @@ function getPosts(action){
                     
                 }
                 
-
-                // const delete_post = document.createElement("div");
-                // delete_post.id = "delete_post";
-                // const spanD = document.createElement("span");
-                // spanD.setAttribute("class","text-secondary");
-                // spanD.innerHTML = "Delete";
-
-                // const edit_post = document.createElement("div");
-                // edit_post.id = "edit_post";
-                // const spanE = document.createElement("span");
-                // spanE.setAttribute("class","text-danger");
-                // spanE.innerHTML = "Edit";
     
                 const post_content = document.createElement("div");
                 post_content.id = "post_content";
@@ -85,7 +73,15 @@ function getPosts(action){
                 post_likes.setAttribute("data-post", `${post.id}`);
                 const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
                 svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-                svg.setAttribute("class", "unlike");
+                if (post.isliked){
+                    svg.setAttribute("class", "like");
+                }else{
+                    svg.setAttribute("class", "unlike");
+                }
+
+                const likes_count = document.createElement("div");
+                likes_count.id = "likes_count";
+                likes_count.innerHTML = `${post.likes} Likes`;
                 
                 
                 svg.setAttributeNS(null, "id", "heart");
@@ -93,7 +89,6 @@ function getPosts(action){
                 const path = document.createElementNS("http://www.w3.org/2000/svg" , "path");
                 path.setAttributeNS(null, "d", "M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z")
                 
-
 
                 const post_comments = document.createElement("div");
                 post_comments.id = "post_comments";
@@ -103,22 +98,15 @@ function getPosts(action){
                 spanCom.innerHTML = "Comment";
                 
 
-
                 poster.append(profile_link);
                 post_info.append(poster);
-                
-                // delete_post.append(spanD);
-                // edit_post.append(spanE);
-                
-                // post_action.append(delete_post);
-                // post_action.append(edit_post);
                 info.append(post_info);
                 info.append(post_action);
                 post_content.append(spanC);
                 post_timestamp.append(spanT);
                 svg.append(path);
                 post_likes.append(svg);
-                post_likes.append("1 Likes");
+                post_likes.append(likes_count);
                 post_comments.append(spanCom);
                 post_num.append(info);
                 post_num.append(post_content);
@@ -151,10 +139,6 @@ function getPosts(action){
             console.log(error)
         });
 
-
-    }else if (action == "profile"){
-
-    }else if (action == "following"){
 
     }else{
         console.log("action error")
@@ -202,23 +186,54 @@ const follow = (event) => {
 const likeUnlikePost = (event) => {
     
 
-    // event.target.classList.contains("like") || dataset.posterid
-    if(event.target.parentElement.classList.contains("like")){
-        // console.log("unlike: " + event.target.parentElement.parentElement.dataset.post)
+    // to unlike
+    if(event.target.parentElement.classList.contains("like")){     
         
         event.target.parentElement.classList.remove("like");
         event.target.parentElement.classList.add("unlike");
 
         const post = event.target.parentElement.parentElement.dataset.post;
 
+        // to decrease the number of like using javascript
+        let count = document.querySelector(`[data-post='${post}'] div`);
+        let decrease =  parseInt(count.innerHTML.charAt(0));
+        decrease--;
+        count.innerHTML = `${decrease} likes`;
         
-    }else if(event.target.classList.contains("unlike")){
+
+        fetch(`/action2/${post}`, {
+            method: 'PUT',
+            body: JSON.stringify({
+                action: "unlike"
+            })
+        })
+        .then(response => response.json())
+        .then(result => {
+
+            console.log(result);
+            
+
+    
+        })
+        .catch(error => {
+            console.log(error)
+        })
+        
+    }// To like a post
+    else if(event.target.classList.contains("unlike")){
         // console.log("like: " + event.target.parentElement.dataset.post)
         
         event.target.classList.remove("unlike");
         event.target.classList.add("like");
 
         const post = event.target.parentElement.dataset.post
+
+        // to add the number of likes by javascript
+        let count = document.querySelector(`[data-post='${post}'] div`);
+        let increase =  parseInt(count.innerHTML.charAt(0));
+        increase++;
+        count.innerHTML = `${increase} likes`;
+
     
         fetch(`/action2/${post}`, {
             method: 'PUT',
@@ -238,9 +253,6 @@ const likeUnlikePost = (event) => {
             console.log(error)
         })
 
-    }else{
-        // console.log(event.target)
-        console.log("error");
     }
     
 }

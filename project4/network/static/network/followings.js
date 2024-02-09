@@ -10,11 +10,11 @@ function getPosts(action){
     fetch(`load_Posts/${action}`)
     .then(response => response.json())
     .then(posts => {
-        console.log(posts);
+
+        // console.log(posts);
         
         posts.forEach(post => {
-            // console.log(post);
-
+            
             const post_num = document.createElement("div");
             post_num.id = `post${post.id}`;
             post_num.setAttribute("class","container w-95 mx-auto shadow rounded");
@@ -67,9 +67,18 @@ function getPosts(action){
 
             const post_likes = document.createElement("div");
             post_likes.id = "post_likes";
+            post_likes.setAttribute("data-post", `${post.id}`);
             const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
             svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-            svg.setAttribute("class", "unlike");
+            if (post.isliked){
+                svg.setAttribute("class", "like");
+            }else{
+                svg.setAttribute("class", "unlike");
+            }
+
+            const likes_count = document.createElement("div");
+            likes_count.id = "likes_count";
+            likes_count.innerHTML = `${post.likes} Likes`;
             
             
             svg.setAttributeNS(null, "id", "heart");
@@ -96,7 +105,7 @@ function getPosts(action){
             post_timestamp.append(spanT);
             svg.append(path);
             post_likes.append(svg);
-            post_likes.append("1 Likes");
+            post_likes.append(likes_count);
             post_comments.append(spanCom);
             post_num.append(info);
             post_num.append(post_content);
@@ -151,15 +160,72 @@ const follow = (event) => {
 const likeUnlikePost = (event) => {
     
 
-    // event.target.classList.contains("like") || 
+    // To unlike a post 
     if(event.target.parentElement.classList.contains("like")){
         
         event.target.parentElement.classList.remove("like");
         event.target.parentElement.classList.add("unlike");
-    }else if(event.target.classList.contains("unlike")){
+        
+        const post = event.target.parentElement.parentElement.dataset.post;
+        
+        // to decrease the number of likes by javascript
+        let count = document.querySelector(`[data-post='${post}'] div`);
+        let decrease =  parseInt(count.innerHTML.charAt(0));
+        decrease--;
+        count.innerHTML = `${decrease} likes`;
+
+        
+        fetch(`/action2/${post}`, {
+            method: 'PUT',
+            body: JSON.stringify({
+                action: "unlike"
+            })
+        })
+        .then(response => response.json())
+        .then(result => {
+
+            console.log(result);
+            
+
+    
+        })
+        .catch(error => {
+            console.log(error)
+        })
+
+    }// To like a post
+    else if(event.target.classList.contains("unlike")){
         
         event.target.classList.remove("unlike");
         event.target.classList.add("like");
+
+        const post = event.target.parentElement.dataset.post
+
+        // to add the number of likes by javascript
+        let count = document.querySelector(`[data-post='${post}'] div`);
+        let increase =  parseInt(count.innerHTML.charAt(0));
+        increase++;
+        count.innerHTML = `${increase} likes`;
+
+    
+        fetch(`/action2/${post}`, {
+            method: 'PUT',
+            body: JSON.stringify({
+                action: "like"
+            })
+        })
+        .then(response => response.json())
+        .then(result => {
+
+            console.log(result);
+            
+
+    
+        })
+        .catch(error => {
+            console.log(error)
+        })
+
     }else{
         // console.log(event.target)
         console.log("error");

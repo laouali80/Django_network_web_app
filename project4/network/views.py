@@ -252,15 +252,26 @@ def action2(request, post_id):
                         "title": "404 error"
                     })
             
-            # if request.user.id != follower_id:
-            #     user.follower.add(request.user)
-            #     request.user.following.add(user)
-
-            return JsonResponse({"message": "Success Like."}, status=200)
-            # else:
-                # error 400 if the user wants try to follow him/her-self.
-                # return JsonResponse({"message": "Bad request"}, status=400)
+            like = post.likes.add(request.user)
             
+            
+            return JsonResponse({"message": "Success Like."}, status=200)
+            
+        elif data.get('action') == 'unlike':
+            try:
+                post = Post.objects.get(pk=post_id)
+            except UnboundLocalError or ValueError:
+                raise Http404("Post not found.")
+            except User.DoesNotExist:
+                    return render(request, "error/404.html", {
+                        "message": "404",
+                        "title": "404 error"
+                    })
+            
+            like = post.likes.remove(request.user)
+
+            return JsonResponse({"message": "Success Unlike."}, status=200)
+                 
         else:
             # if there is no action in the demand.
             return HttpResponse(status=204)

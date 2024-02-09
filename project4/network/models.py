@@ -12,6 +12,7 @@ class Post(models.Model):
     content = models.CharField(max_length=100)
     poster = models.ForeignKey('User', on_delete=models.CASCADE, related_name='posts')
     timestamp = models.DateTimeField(auto_now_add=True)
+    likes = models.ManyToManyField("User", blank=True, related_name="likes_count")
 
     def __str__(self):
         return f"Post ({self.id}) by {self.poster}."
@@ -24,10 +25,12 @@ class Post(models.Model):
             "poster": self.poster.username,
             "poster_id": self.poster.id,
             "timestamp": self.timestamp.strftime("%b %d, %Y, %I:%M %p"),
-            "isfollow": request_user in self.poster.follower.all()
+            "isfollow": request_user in self.poster.follower.all(),
+            "likes": self.likes.count(),
+            "isliked": request_user in self.likes.all()
         }
 
-class Like(models.Model):
-    post = models.ForeignKey('Post', on_delete=models.CASCADE)
-    count = models.ManyToManyField("User", related_name="likes_count")
+# class Like(models.Model):
+#     post = models.ForeignKey('Post', on_delete=models.CASCADE)
+#     count = models.ManyToManyField("User", blank=True, related_name="likes_count")
 

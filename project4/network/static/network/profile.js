@@ -1,5 +1,12 @@
 document.addEventListener("DOMContentLoaded", () =>{
 
+            // eventListener to all the like btn
+            const hearts = document.querySelectorAll("#heart");
+
+            hearts.forEach(heart => {
+                
+                heart.addEventListener("click", likeUnlikePost);
+            });
     
             // eventListener to all the follow btn
             const btns = document.querySelectorAll("button");
@@ -97,6 +104,82 @@ const follow = (event) => {
         .catch(error => {
             console.log(error)
         })
+    }
+    
+}
+
+
+
+const likeUnlikePost = (event) => {
+    
+
+    // to unlike
+    if(event.target.parentElement.classList.contains("like")){     
+        
+        event.target.parentElement.classList.remove("like");
+        event.target.parentElement.classList.add("unlike");
+
+        const post = event.target.parentElement.parentElement.dataset.post;
+
+        // to decrease the number of like using javascript
+        let count = document.querySelector(`[data-post='${post}'] div`);
+        let decrease =  parseInt(count.innerHTML.charAt(0));
+        decrease--;
+        count.innerHTML = `${decrease} likes`;
+        
+
+        fetch(`/action2/${post}`, {
+            method: 'PUT',
+            body: JSON.stringify({
+                action: "unlike"
+            })
+        })
+        .then(response => response.json())
+        .then(result => {
+
+            console.log(result);
+            
+
+    
+        })
+        .catch(error => {
+            console.log(error)
+        })
+        
+    }// To like a post
+    else if(event.target.classList.contains("unlike")){
+        // console.log("like: " + event.target.parentElement.dataset.post)
+        
+        event.target.classList.remove("unlike");
+        event.target.classList.add("like");
+
+        const post = event.target.parentElement.dataset.post
+
+        // to add the number of likes by javascript
+        let count = document.querySelector(`[data-post='${post}'] div`);
+        let increase =  parseInt(count.innerHTML.charAt(0));
+        increase++;
+        count.innerHTML = `${increase} likes`;
+
+    
+        fetch(`/action2/${post}`, {
+            method: 'PUT',
+            body: JSON.stringify({
+                action: "like"
+            })
+        })
+        .then(response => response.json())
+        .then(result => {
+
+            console.log(result);
+            
+
+    
+        })
+        .catch(error => {
+            console.log(error)
+        })
+
     }
     
 }
