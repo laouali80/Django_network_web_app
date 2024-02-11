@@ -76,7 +76,8 @@
                                     <a role="button" aria-pressed="true" href="{% url 'edit' post_id=post.id %}" class="btn btn-outline-secondary">Edit</a>
                                 </div>
                                 <div id="edit_post">
-                                    <button id="delete" data-post="{{ post.id }}" class="btn btn-outline-danger">Delete</button>
+                                    <button data-toggle="modal" data-target="#confirmationModal-{{ post.id }}" class="btn btn-outline-danger">Delete</button>
+                                    
                                 </div>
                             {% endif %}
                         </div>
@@ -110,11 +111,14 @@
                         </span>
                     </div>
                 </div>
+                {% include "includes/modal.html" %}
             {% empty %}
                 <h3>No Posts Yet.</h3>
             {% endfor %}
             
         </div>
+
+
 
         <script src="{% static 'network/profile.js' %}"></script>
 {% endblock %}

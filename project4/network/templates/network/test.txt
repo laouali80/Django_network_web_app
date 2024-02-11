@@ -1,199 +1,22 @@
-<div id="post" class="container w-95 mx-auto shadow rounded">
-        <div id="info" class="d-flex bd-highlight">
-            <div id="post_info" class="p-1 flex-grow-1 d-flex align-items-center bd-highlight">
-                <div id="poster">
-                    Foo
-                </div>
-            </div>
-            <div id="post_action" class="d-flex flex-row p-2 bd-highlight align-items-center ">
-                <div id="follow">
-                    <button class="btn btn-primary" >Follow</button> 
-                </div>
-                <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" /> -->
-                <!-- </svg> -->
-
-                <div id="delete_post">
-                    <span class="text-secondary">Delete</span>
-                </div>
-                <div id="edit_post">
-                    <span class="text-danger">Edit</span>
-                </div>
-            </div>
+<!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
-        <!-- class="mb-2 d-block text-truncate" -->
-        <div id="post_content" class="text-truncate-vertical">
-            <span>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. 
-            Asperiores possimus dicta beatae ex. Id adipisci repudiandae modi cumque suscipit tempora sed numquam laboriosam qui, 
-            eligendi at incidunt expedita, nostrum consequatur culpa? Error necessitatibus commodi quaerat ducimus consequuntur ex animi dolorum rem quisquam cumque vitae quasi iusto nihil, nobis obcaecati harum dignissimos quis repudiandae! Vitae consequatur quaerat laboriosam ipsa harum culpa possimus voluptas, mollitia,
-             amet ex soluta praesentium provident illum nisi dolores alias nulla adipisci, repellendus accusantium sapiente corrupti! Ab, alias nisi, facilis quae tempore dignissimos illo repellat esse illum beatae impedit adipisci sint hic iure quam magni laborum animi possimus.    
-            </span>
+        <div class="modal-body">
+          ...
         </div>
-        <div id="post_timestamp">
-            <span class="text-secondary">March 29, 2020, 11:40 p.m.</span>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
         </div>
-        <!-- currentColor -->
-        <div id="post_likes" >
-            
-            <svg xmlns="http://www.w3.org/2000/svg" id="heart" viewBox="0 0 24 24">
-                <path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
-            </svg>
-              
-                1 likes
-        </div>
-        <div id="post_comments" class="mb-2">
-            <span class="text-secondary">Comment</span>
-        </div>
-</div>
+      </div>
+    </div>
+  </div> -->
 
-
-
-    <div id="post" class="container w-95 mx-auto shadow rounded">
-                <div id="info" class="d-flex bd-highlight">
-                    <div id="post_info" class="p-1 flex-grow-1 d-flex align-items-center bd-highlight">
-                        <div id="poster">
-                            Foo
-                        </div>
-                    </div>
-                    <div id="post_action" class="d-flex flex-row p-2 bd-highlight align-items-center ">
-                        <div id="follow">
-                            <button class="btn btn-primary" >Follow</button> 
-                        </div>
-                        <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" /> -->
-                        <!-- </svg> -->
-
-                        <div id="delete_post">
-                            <span class="text-secondary">Delete</span>
-                        </div>
-                        <div id="edit_post">
-                            <span class="text-danger">Edit</span>
-                        </div>
-                    </div>
-                </div>
-                <!-- class="mb-2 d-block text-truncate" -->
-                <div id="post_content" class="text-truncate-vertical">
-                    <span>
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. 
-                    Asperiores possimus dicta beatae ex. Id adipisci repudiandae modi cumque suscipit tempora sed numquam laboriosam qui, 
-                    eligendi at incidunt expedita, nostrum consequatur culpa? Error necessitatibus commodi quaerat ducimus consequuntur ex animi dolorum rem quisquam cumque vitae quasi iusto nihil, nobis obcaecati harum dignissimos quis repudiandae! Vitae consequatur quaerat laboriosam ipsa harum culpa possimus voluptas, mollitia,
-                    amet ex soluta praesentium provident illum nisi dolores alias nulla adipisci, repellendus accusantium sapiente corrupti! Ab, alias nisi, facilis quae tempore dignissimos illo repellat esse illum beatae impedit adipisci sint hic iure quam magni laborum animi possimus.    
-                    </span>
-                </div>
-                <div id="post_timestamp">
-                    <span class="text-secondary">March 29, 2020, 11:40 p.m.</span>
-                </div>
-                <!-- currentColor -->
-                <div id="post_likes" >
-                    
-                    <svg xmlns="http://www.w3.org/2000/svg" id="heart" viewBox="0 0 24 24">
-                        <path id="heartIcon" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
-                    </svg>
-                    <!-- <svg xmlns="http://www.w3.org/2000/svg" id="heart" viewBox="0 0 24 24">
-                        <path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"></path>
-                    </svg> -->
-                        1 likes
-                </div>
-                <div id="post_comments" class="mb-2">
-                    <span class="text-secondary">Comment</span>
-                </div>
-            </div>
-
-            <div id="post" class="container w-95 mx-auto shadow rounded">
-                <div id="info" class="d-flex bd-highlight">
-                    <div id="post_info" class="p-1 flex-grow-1 d-flex align-items-center bd-highlight">
-                        <div id="poster">
-                            Foo
-                        </div>
-                    </div>
-                    <div id="post_action" class="d-flex flex-row p-2 bd-highlight align-items-center ">
-                        <div id="follow">
-                            <button class="btn btn-primary" >Follow</button> 
-                        </div>
-                        <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" /> -->
-                        <!-- </svg> -->
-
-                        <div id="delete_post">
-                            <span class="text-secondary">Delete</span>
-                        </div>
-                        <div id="edit_post">
-                            <span class="text-danger">Edit</span>
-                        </div>
-                    </div>
-                </div>
-                <!-- class="mb-2 d-block text-truncate" -->
-                <div id="post_content" class="text-truncate-vertical">
-                    <span>
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. 
-                    Asperiores possimus dicta beatae ex. Id adipisci repudiandae modi cumque suscipit tempora sed numquam laboriosam qui, 
-                    eligendi at incidunt expedita, nostrum consequatur culpa? Error necessitatibus commodi quaerat ducimus consequuntur ex animi dolorum rem quisquam cumque vitae quasi iusto nihil, nobis obcaecati harum dignissimos quis repudiandae! Vitae consequatur quaerat laboriosam ipsa harum culpa possimus voluptas, mollitia,
-                    amet ex soluta praesentium provident illum nisi dolores alias nulla adipisci, repellendus accusantium sapiente corrupti! Ab, alias nisi, facilis quae tempore dignissimos illo repellat esse illum beatae impedit adipisci sint hic iure quam magni laborum animi possimus.    
-                    </span>
-                </div>
-                <div id="post_timestamp">
-                    <span class="text-secondary">March 29, 2020, 11:40 p.m.</span>
-                </div>
-                <!-- currentColor -->
-                <div id="post_likes" >
-                    
-                    <svg xmlns="http://www.w3.org/2000/svg" id="heart" viewBox="0 0 24 24">
-                        <path id="heartIcon" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
-                    </svg>
-                    
-                        1 likes
-                </div>
-                <div id="post_comments" class="mb-2">
-                    <span class="text-secondary">Comment</span>
-                </div>
-            </div>
-
-            <div id="post" class="container w-95 mx-auto shadow rounded">
-                <div id="info" class="d-flex bd-highlight">
-                    <div id="post_info" class="p-1 flex-grow-1 d-flex align-items-center bd-highlight">
-                        <div id="poster">
-                            Foo
-                        </div>
-                    </div>
-                    <div id="post_action" class="d-flex flex-row p-2 bd-highlight align-items-center ">
-                        <div id="follow">
-                            <button class="btn btn-primary" >Follow</button> 
-                        </div>
-                        <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" /> -->
-                        <!-- </svg> -->
-
-                        <div id="delete_post">
-                            <span class="text-secondary">Delete</span>
-                        </div>
-                        <div id="edit_post">
-                            <span class="text-danger">Edit</span>
-                        </div>
-                    </div>
-                </div>
-                <!-- class="mb-2 d-block text-truncate" -->
-                <div id="post_content" class="text-truncate-vertical">
-                    <span>
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. 
-                    Asperiores possimus dicta beatae ex. Id adipisci repudiandae modi cumque suscipit tempora sed numquam laboriosam qui, 
-                    eligendi at incidunt expedita, nostrum consequatur culpa? Error necessitatibus commodi quaerat ducimus consequuntur ex animi dolorum rem quisquam cumque vitae quasi iusto nihil, nobis obcaecati harum dignissimos quis repudiandae! Vitae consequatur quaerat laboriosam ipsa harum culpa possimus voluptas, mollitia,
-                    amet ex soluta praesentium provident illum nisi dolores alias nulla adipisci, repellendus accusantium sapiente corrupti! Ab, alias nisi, facilis quae tempore dignissimos illo repellat esse illum beatae impedit adipisci sint hic iure quam magni laborum animi possimus.    
-                    </span>
-                </div>
-                <div id="post_timestamp">
-                    <span class="text-secondary">March 29, 2020, 11:40 p.m.</span>
-                </div>
-                <!-- currentColor -->
-                <div id="post_likes" >
-                    
-                    <svg xmlns="http://www.w3.org/2000/svg" id="heart" viewBox="0 0 24 24">
-                        <path id="heartIcon" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
-                    </svg>
-                    
-                        1 likes
-                </div>
-                <div id="post_comments" class="mb-2">
-                    <span class="text-secondary">Comment</span>
-                </div>
-            </div>
+  <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Launch demo modal</button> -->
+                                    

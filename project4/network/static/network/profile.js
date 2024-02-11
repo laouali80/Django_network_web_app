@@ -19,18 +19,37 @@ document.addEventListener("DOMContentLoaded", () =>{
             const btns_delete = document.querySelectorAll("#delete")
 
             btns_delete.forEach(btn => {
-                btn.addEventListener("click", delet);
+                btn.addEventListener("click", suppr);
             })
+
+            
 
 });
 
 
-const delet = (event) => {
+const suppr = (event) => {
 
     const delete_post = event.target.dataset.post
+    
 
-    // fetch(``)
-    // .then
+    fetch(`/delete/${delete_post}`, {
+        method: 'DELETE',
+        body: JSON.stringify({
+            action: "delete"
+        })
+    })
+    .then(response => response.json())
+    .then(result => {
+
+        console.log(result);
+        
+        const g_parent = document.querySelector(`#post${delete_post}`);
+        g_parent.style.animationPlayState = 'running';
+        g_parent.addEventListener('animationend', () =>  {
+            g_parent.remove();
+        });
+    })
+    .catch(error => console.log(error))
 }
 
 const follow = (event) => {

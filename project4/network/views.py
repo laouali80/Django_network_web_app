@@ -12,10 +12,28 @@ from django.http import JsonResponse
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 @login_required(login_url="/login")
 def index(request):
+
+    posts = Post.objects.all().exclude(poster=request.user)
+
+    # p = Paginator(list_of_objects, no_of_objects_per_page)
+    p = Paginator(posts, 5)
+
+    # getting the desired page number from url
+    page_number = request.GET.get('page')
+    try:
+        page_obj = p.get_page(page_number)  # returns the desired page object
+    except PageNotAnInteger:
+        # if page_number is not an integer then assign the first page
+        page_obj = p.page(1)
+    except EmptyPage:
+        # if page is empty then return last page
+        page_obj = p.page(p.num_pages)
+
     return render(request, "network/index.html", {
         "form": NewPostForm()
         # "posts": Post.objects.all("").order_by('-timestamp')
@@ -162,7 +180,6 @@ def edit(request, post_id):
             post.content = edit_content
             post.timestamp = timezone.now()
             post.save()
-            # print(timezone.now())
 
             return redirect('profile', user_name=request.user.username)
         
@@ -334,3 +351,34 @@ def action2(request, post_id):
         else:
             # if there is no action in the demand.
             return HttpResponse(status=204)
+
+
+@csrf_exempt
+@login_required(login_url="/login")
+def delete(request, post_id):
+    """Deletion of a post."""
+    
+    if request.method == 'DELETE':
+
+        data = json.loads(request.body)
+
+        if data.get('action') == 'delete':
+            try:
+                post = Post.objects.get(pk=post_id)
+            except UnboundLocalError or ValueError:
+                raise Http404("Post not found.")
+            except User.DoesNotExist:
+                    return render(request, "error/404.html", {
+                        "message": "404",
+                        "title": "404 error"
+                    })
+            
+            if post.poster != request.user:
+                return render(request, "error/403.html", {
+                        "message": "403 Forbidden Request.",
+                        "title": "403 Forbidden Request"
+                    })
+            
+            post.delete()
+            
+            return JsonResponse({"message": "Success deletion."}, status=200)

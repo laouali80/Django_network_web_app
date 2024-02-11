@@ -17,4 +17,5 @@ urlpatterns = [
     path("load_Posts/<str:action>", views.load_Posts, name="load_Posts"),
     path("action/<int:follower_id>", views.action, name="action"),
     path("action2/<int:post_id>", views.action2, name="action2"),
+    path("delete/<int:post_id>", views.delete, name="delete"),
 ]
