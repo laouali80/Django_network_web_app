@@ -1,13 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
     // By default get the posts
-    getPosts("followings");
+    getPosts("followings", 1);
 })
 
-function getPosts(action){
+function getPosts(action, page){
 
     const posts_container = document.querySelector("#posts")
+    posts_container.innerHTML = "";
 
-    fetch(`load_Posts/${action}`)
+    fetch(`load_Posts/${action}/${page}`)
     .then(response => response.json())
     .then(posts => {
 
@@ -36,22 +37,22 @@ function getPosts(action){
             profile_link.setAttribute("id", "profile_link");
             profile_link.innerHTML = `${post.poster}`;
 
-            const post_action = document.createElement("div");
-            post_action.id = "post_action";
-            post_action.setAttribute("class","d-flex flex-row p-2 bd-highlight align-items-center");
+            // const post_action = document.createElement("div");
+            // post_action.id = "post_action";
+            // post_action.setAttribute("class","d-flex flex-row p-2 bd-highlight align-items-center");
 
-            if (!post.isfollow){
+            // if (!post.isfollow){
 
-                const follow = document.createElement("div");
-                follow.id = "follow";
-                const btn = document.createElement("button");
-                btn.setAttribute("class","btn btn-primary");
-                btn.setAttribute("data-posterId", `${post.poster_id}`);
-                btn.innerHTML = "Follow";
-                follow.append(btn);
-                post_action.append(follow);
+            //     const follow = document.createElement("div");
+            //     follow.id = "follow";
+            //     const btn = document.createElement("button");
+            //     btn.setAttribute("class","btn btn-primary");
+            //     btn.setAttribute("data-posterId", `${post.poster_id}`);
+            //     btn.innerHTML = "Follow";
+            //     follow.append(btn);
+            //     post_action.append(follow);
                 
-            }
+            // }
             
             const post_content = document.createElement("div");
             post_content.id = "post_content";
@@ -100,7 +101,7 @@ function getPosts(action){
             poster.append(profile_link);
             post_info.append(poster);
             info.append(post_info);
-            info.append(post_action);
+            // info.append(post_action);
             post_content.append(spanC);
             post_timestamp.append(spanT);
             svg.append(path);
@@ -125,12 +126,15 @@ function getPosts(action){
         });
 
 
-        // eventListener to all the follow btn
-        const btns = document.querySelectorAll("button");
-        
-        btns.forEach(btn => {
-            btn.addEventListener("click", follow);
+        // EventListener on the page button
+        const page_btn = document.querySelectorAll("#page");
+
+        page_btn.forEach(btn => {
+            const page_num = btn.dataset.page_num
+
+            btn.addEventListener('click', () => getPosts("all", page_num))
         })
+        
 
     })
     .catch(error => {
@@ -141,21 +145,7 @@ function getPosts(action){
 
 }
 
-const follow = (event) => {
-    const element = event.target;
-    const follow_id = element.dataset.posterid
-    
-    fetch(`/follow/${follow_id}`)
-    .then(response => response.json())
-    .then(result => {
 
-        console.log(result);
-    })
-    .catch(error => {
-      // information about the error if server goes down or could request(valid mailbox)
-      console.log(error)  
-    })
-}
 
 const likeUnlikePost = (event) => {
     

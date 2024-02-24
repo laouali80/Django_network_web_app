@@ -1,9 +1,11 @@
 {% extends "network/layout.html" %}
 {% load static %}
 
+
+{% block title %} {{Title}} {% endblock %}
 {% block body %}
     <h1>All Posts</h1>
-
+    
     </div>
     {% if messages %}
         {% for message in messages %}
@@ -38,10 +40,14 @@
 
     <div id="posts"></div>
 
-    <a class="btn btn-outline-info mb-4" href="#">1</a>
-    <a class="btn btn-outline-info mb-4" href="#">2</a>
-    <a class="btn btn-outline-info mb-4" href="#">3</a>
+    <div class="container w-95 mx-auto mt-4 mb-2">
+        {% for i in page_range %}
+            <button class="btn btn-outline-info mb-4" id="page" data-page_num="{{ i }}">{{ i }}</button>
+        {% endfor %}
+    </div>
+    
 
+    
     <script src="{% static 'network/index.js' %}"></script>
 
 {% endblock %}

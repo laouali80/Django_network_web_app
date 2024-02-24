@@ -21,22 +21,12 @@ def index(request):
     posts = Post.objects.all().exclude(poster=request.user)
 
     # p = Paginator(list_of_objects, no_of_objects_per_page)
-    p = Paginator(posts, 5)
-
-    # getting the desired page number from url
-    page_number = request.GET.get('page')
-    try:
-        page_obj = p.get_page(page_number)  # returns the desired page object
-    except PageNotAnInteger:
-        # if page_number is not an integer then assign the first page
-        page_obj = p.page(1)
-    except EmptyPage:
-        # if page is empty then return last page
-        page_obj = p.page(p.num_pages)
+    p = Paginator(posts, 3)
 
     return render(request, "network/index.html", {
-        "form": NewPostForm()
-        # "posts": Post.objects.all("").order_by('-timestamp')
+        "form": NewPostForm(),
+        "page_range": p.page_range,
+        "Title": "All posts"
     })
 
 
@@ -149,7 +139,30 @@ def profile_page(request, user_name):
 
 @login_required(login_url="/login")
 def followings(request):
-    return render(request, "network/followings.html")
+
+    users_follow_set = request.user.following.all()
+
+    posts = []
+    for post_set in users_follow_set:
+        # getting all posts of a user set
+        set_posts = post_set.posts.all()
+        
+        for post in set_posts:
+            
+            posts.append(post)
+
+        posts = posts
+
+    
+    
+    # p = Paginator(list_of_objects, no_of_objects_per_page)
+    pages = Paginator(posts, 3)
+    
+
+    return render(request, "network/followings.html", {
+        "page_range": pages.page_range,
+        "Title": "All Following posts"
+    })
 
 
 @login_required(login_url="/login")
@@ -212,25 +225,62 @@ def edit(request, post_id):
 # APIs
 
 @login_required(login_url="/login")
-def load_Posts(request, action):
+def load_Posts(request, action, page_num):
     """Getting all the posts"""
 
     if action == "all":
         posts = Post.objects.all().exclude(poster=request.user).order_by("-timestamp")
 
-        return JsonResponse([ post.serialize(request.user) for post in posts ], safe=False)
+         # p = Paginator(list_of_objects, no_of_objects_per_page)
+        pages = Paginator(posts, 3)
+
+        # getting the desired page number from url [request.GET.get('page')
+        page_number = page_num
+        try:
+            page_obj = pages.get_page(page_number)  # returns the desired page object
+        except PageNotAnInteger:
+            # if page_number is not an integer then assign the first page
+            page_obj = pages.page(1)
+        except EmptyPage:
+            # if page is empty then return last page
+            page_obj = pages.page(pages.num_pages)
+
+        
+        return JsonResponse([ post.serialize(request.user) for post in page_obj ], safe=False)
     
     elif action == "followings":
-        users_follow = request.user.following.all()
+        users_follow_set = request.user.following.all()
 
         posts = []
-        for post_set in users_follow:
+        for post_set in users_follow_set:
+            # getting all posts of a user set
             set_posts = post_set.posts.all()
             
             for post in set_posts:
                 
-                serialize = post.serialize(request.user)
-                posts.append(serialize)
+                # serialize = post.serialize(request.user)
+                # posts.append(serialize)
+                posts.append(post)
+
+            posts = posts
+
+        
+        
+        # p = Paginator(list_of_objects, no_of_objects_per_page)
+        pages = Paginator(posts, 3)
+
+        # getting the desired page number from url 
+        page_number = page_num
+        try:
+            page_obj = pages.get_page(page_number)  # returns the desired page object
+        except PageNotAnInteger:
+            # if page_number is not an integer then assign the first page
+            page_obj = pages.page(1)
+        except EmptyPage:
+            # if page is empty then return last page
+            page_obj = pages.page(pages.num_pages)
+        
+        posts = [ post.serialize(request.user) for post in page_obj ]
             
         return JsonResponse(sorted(posts, key=lambda d: d['timestamp'], reverse=True), safe=False)
 

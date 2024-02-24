@@ -1,16 +1,20 @@
 
 document.addEventListener("DOMContentLoaded", () => {
     // By default get the posts
-    getPosts("all");
+    getPosts("all", 1);
+
+
 })
 
-function getPosts(action){
+function getPosts(action, page){
 
+    
     if (action == "all"){
 
         const posts_container = document.querySelector("#posts")
+        posts_container.innerHTML = "";
 
-        fetch(`load_Posts/${action}`)
+        fetch(`load_Posts/${action}/${page}`)
         .then(response => response.json())
         .then(posts => {
             
@@ -131,6 +135,15 @@ function getPosts(action){
             
             btns.forEach(btn => {
                 btn.addEventListener("click", follow);
+            })
+
+            // EventListener on the page button
+            const page_btn = document.querySelectorAll("#page");
+
+            page_btn.forEach(btn => {
+                const page_num = btn.dataset.page_num
+
+                btn.addEventListener('click', () => getPosts("all", page_num))
             })
 
         })

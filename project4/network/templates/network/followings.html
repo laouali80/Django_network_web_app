@@ -1,10 +1,17 @@
 {% extends "network/layout.html" %}
 {% load static %}
 
+{% block title %} {{Title}} {% endblock %}
 {% block body %}
     <h1>Profiles You Follow</h1>
 
     <div id="posts"></div>
+
+    <div class="container w-95 mx-auto mt-4 mb-2">
+        {% for i in page_range %}
+            <button class="btn btn-outline-info mb-4" id="page" data-page_num="{{ i }}">{{ i }}</button>
+        {% endfor %}
+    </div>
 
     <script src="{% static 'network/followings.js' %}"></script>
 
